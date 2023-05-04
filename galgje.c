@@ -7,14 +7,14 @@
 
 #define MAX 64
 
-char* ask_input(void);
-void print_art(int);
+char* vraag_input(void);
+void plaatje(int);
 int count_unique_char(char*);
 
-char player = 'A';
-bool guessed = false;
-int lives = 6;
-char *word = NULL;
+char speler = 'A';
+bool geraden = false;
+int levens = 6;
+char *woord = NULL;
 char tries[MAX] = {0};
 char guess = 0;
 
@@ -23,96 +23,96 @@ int main(void)
     //later proberen met extern bestand
     system("clear");
 
-    word = ask_input();
+    woord = vraag_input();
 
     //Door een int met aantal unieke letters in te stellen hoeft in bijv goedemiddag 
-    //de g of de d maar een keer guessed te worden omdat bij een goede raadbeurt unique-- geeft.
-    int unique = count_unique_char(word);
+    //de g of de d maar een keer geraden te worden omdat bij een goede raadbeurt uniek-- geeft.
+    int uniek = count_unique_char(woord);
 
-    for (int i = 0; lives != 0 && guessed == false; i++)
+    for (int i = 0; levens != 0 && geraden == false; i++)
     {
-        printf("You have %i lives left\n", lives);
+        printf("Je hebt nog %i levens\n", levens);
         if (i > 0)
         {
-            printf("You have already tried: %s\n", tries);
+            printf("Dit heb je al geprobeerd: %s\n", tries);
         }
         else
         {
             printf("\n");
         }
-        print_art(lives);
-        printf("       # HANGMAN #       \n");
+        plaatje(levens);
+        printf("       # GALGJE #       \n");
 
-        //player B voert een letter in
-        printf("Player %c, guess a character: ... \n", player+1);
+        //Speler B voert een letter in
+        printf("Speler %c, raad een letter: ... \n", speler+1);
         scanf(" %c", &guess);
         system("clear");
 
 
-        //Als letter al een keer guessed is
+        //Als letter al een keer geraden is
         if (strchr(tries, guess) != NULL)
         {
-            lives--;
-            printf("The letter %c has already been tried!\n", guess);
+            levens--;
+            printf("%c heb je al geprobeerd!\n", guess);
             continue;
         }
 
         //Als letter goed is.
-        if (strchr(word, guess) != NULL)
+        if (strchr(woord, guess) != NULL)
         {
-            printf("The letter %c is right!\n", guess);
-            unique--;
+            printf("%c is goed!\n", guess);
+            uniek--;
         }
         else
         {
-            printf("Too bad!\n");
-            lives--;
+            printf("Helaas!\n");
+            levens--;
         }
 
         //ith element van tries gelijkstellen aan waarde van guess in deze iteration
         tries[i] = guess;
 
-        //Als het alle unieke karakters guessed zijn, door iedere iteration unique-- te doen
-        //kunnen we ervanuitgaan dat het word guessed is
-        if (unique == 0)
+        //Als het alle unieke karakters geraden zijn, door iedere iteration uniek-- te doen
+        //kunnen we ervanuitgaan dat het woord geraden is
+        if (uniek == 0)
         {
-            guessed = true;
+            geraden = true;
         }
     }
 
-    if (lives == 0)
+    if (levens == 0)
     {
         system("clear");
 
         printf("\n    #  G A L G J E  #   \n");
-        print_art(lives);
+        plaatje(levens);
         printf("Jammer, je bent af.\n\n");
     }
-    if (guessed == true)
+    if (geraden == true)
     {
         system("clear");
 
         printf("\n   # ! G A L G J E ! #  \n");
-        print_art(lives);
-        printf("Gefeliciteerd, het word was '%s'\n\n", word);
+        plaatje(levens);
+        printf("Gefeliciteerd, het woord was '%s'\n\n", woord);
     }
 
-    free(word);
+    free(woord);
 
 
 return 0;
 }
 
-char* ask_input(void)
+char* vraag_input(void)
 {
-    word = malloc(MAX);
-    printf("\n       # HANGMAN #       \n");
-    printf("player %c geef een word op: ...\n", player);
-    scanf(" %s", word);
+    woord = malloc(MAX);
+    printf("\n       # GALGJE #       \n");
+    printf("Speler %c geef een woord op: ...\n", speler);
+    scanf(" %s", woord);
 
     system("clear");
 
-    return word;
+    return woord;
 }
 
 int count_unique_char(char* str)
@@ -126,7 +126,7 @@ for (i = 0; str[i] != '\0'; i++)//iteriate door de string
 {
     for (j = 0; j < i; j++)
     {
-        if (str[i] == str[j])//is word[ith element] gelijk aan word[letter op plek j, dus onder i]
+        if (str[i] == str[j])//is woord[ith element] gelijk aan woord[letter op plek j, dus onder i]
         {
             break;//stoppen
         }
@@ -139,7 +139,7 @@ for (i = 0; str[i] != '\0'; i++)//iteriate door de string
 return c;
 }
 
-void print_art(int l)
+void plaatje(int l)
 {
     printf(":::::::::::::::::::::\n");
     switch (l)
